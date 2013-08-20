@@ -45,3 +45,17 @@ service "afcollector" do
   supports :restart => true, :start => true
   action :nothing
 end
+
+chef_gem "rappfirst" do
+  action :install
+  version ">= 0.3.0"
+end
+
+ruby_block "Update Appfirst Alerts" do
+  block do
+    class Chef::Resource::RubyBlock
+      include Appfirst
+    end
+    rewrite_alerts(node, 'user@example.com', '12345abcdef')
+  end
+end
